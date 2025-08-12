@@ -1,5 +1,6 @@
-cd path/to/your/local/repo
-git add images/
-git commit -m "Add images folder and pictures"
-git push
-
+my-project/
+├── index.html
+├── style.css
+├── images/
+│   ├── logo.png
+│   └── background.jpg
