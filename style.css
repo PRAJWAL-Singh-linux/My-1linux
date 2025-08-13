@@ -90,3 +90,145 @@ footer {
     padding: 10px;
     margin-top: 20px;
 }
+
+img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin-top: 20px;
+}
+
+/* AI Chatbot Styles */
+#ai-chatbot {
+    background: rgba(255,255,255,0.6);
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chatbox {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#chatlog {
+    background: #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+    height: 120px;
+    overflow-y: auto;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+#userInput {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+#ai-chatbot button {
+    background: #84fab0;
+    color: #333;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background 0.2s, color 0.2s;
+}
+#ai-chatbot button:hover {
+    background: #8fd3f4;
+    color: #fff;
+}
+
+/* Tic-Tac-Toe Game Styles */
+#ticTacToe {
+    margin: 20px auto;
+    max-width: 220px;
+    background: rgba(255,255,255,0.6);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+#ticTacToe .row {
+    display: flex;
+}
+#ticTacToe .cell {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    margin: 3px;
+    border-radius: 8px;
+    border: 2px solid #8fd3f4;
+    background: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#ticTacToe .cell:hover {
+    background: #8fd3f4;
+    color: #fff;
+}
+#gameStatus {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* Fun Fact Generator Styles */
+#fun-fact {
+    background: rgba(255,255,255,0.6);
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+#factDisplay {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    color: #2d6a4f;
+    min-height: 24px;
+}
+
+/* IQ Checker Styles */
+#iq-checker {
+    background: rgba(255,255,255,0.6);
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+#quizBox input[type="text"] {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+#quizBox button {
+    background: #84fab0;
+    color: #333;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 5px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background 0.2s, color 0.2s;
+}
+#quizBox button:hover {
+    background: #8fd3f4;
+    color: #fff;
+}
+#quizFeedback {
+    margin-top: 10px;
+    font-weight: bold;
+}
+#quizScore {
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
