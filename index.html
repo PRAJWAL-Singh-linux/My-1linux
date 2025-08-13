@@ -19,20 +19,18 @@
 
   <!-- Animated Welcome Text -->
   <h1 class="animated-text">Hello World!</h1>
-  <p>This is my first online website!</p>
+  <p>This is my first online website! :)</p>
 
   <!-- About Section -->
   <section id="about">
     <h2>About Me</h2>
-    <p>I'm learning web development and this is my first project. I love creating beautiful and interactive websites!</p>
+    <p>I'm learning web development, and this is my first project. I love creating beautiful and interactive websites!</p>
   </section>
 
   <!-- Gallery Section -->
   <section id="gallery" class="gallery">
     <h2>Gallery</h2>
-    <img src="https://via.placeholder.com/250x150?text=Image+1" alt="Gallery Image 1">
-    <img src="https://via.placeholder.com/250x150?text=Image+2" alt="Gallery Image 2">
-    <img src="https://via.placeholder.com/250x150?text=Image+3" alt="Gallery Image 3">
+    <!-- Images removed as requested -->
   </section>
 
   <!-- Button -->
@@ -44,21 +42,79 @@
     <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
     <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
   </div>
+
+  <!-- Tic-Tac-Toe Game Section -->
+  <section id="game">
+    <h2>Play Tic-Tac-Toe!</h2>
+    <div id="ticTacToe">
+      <div class="row">
+        <button class="cell" onclick="makeMove(0)"></button>
+        <button class="cell" onclick="makeMove(1)"></button>
+        <button class="cell" onclick="makeMove(2)"></button>
+      </div>
+      <div class="row">
+        <button class="cell" onclick="makeMove(3)"></button>
+        <button class="cell" onclick="makeMove(4)"></button>
+        <button class="cell" onclick="makeMove(5)"></button>
+      </div>
+      <div class="row">
+        <button class="cell" onclick="makeMove(6)"></button>
+        <button class="cell" onclick="makeMove(7)"></button>
+        <button class="cell" onclick="makeMove(8)"></button>
+      </div>
+      <div id="gameStatus"></div>
+      <button onclick="resetGame()">Restart</button>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 My First Website</p>
   </footer>
+
+  <!-- Tic-Tac-Toe Game Script -->
+  <script>
+  let board = ["", "", "", "", "", "", "", "", ""];
+  let currentPlayer = "X";
+  let gameActive = true;
+
+  function makeMove(index) {
+    if (!gameActive || board[index] !== "") return;
+    board[index] = currentPlayer;
+    document.getElementsByClassName('cell')[index].textContent = currentPlayer;
+    if (checkWinner()) {
+      document.getElementById('gameStatus').textContent = currentPlayer + " wins!";
+      gameActive = false;
+    } else if (board.every(cell => cell !== "")) {
+      document.getElementById('gameStatus').textContent = "It's a draw!";
+      gameActive = false;
+    } else {
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
+      document.getElementById('gameStatus').textContent = "Turn: " + currentPlayer;
+    }
+  }
+
+  function checkWinner() {
+    const winPatterns = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+    return winPatterns.some(pattern =>
+      pattern.every(idx => board[idx] === currentPlayer)
+    );
+  }
+
+  function resetGame() {
+    board = ["", "", "", "", "", "", "", "", ""];
+    currentPlayer = "X";
+    gameActive = true;
+    Array.from(document.getElementsByClassName('cell')).forEach(cell => cell.textContent = "");
+    document.getElementById('gameStatus').textContent = "Turn: X";
+  }
+  window.onload = function() {
+    resetGame();
+  };
+  </script>
 </body>
 </html>
-
-<!-- ...existing code... -->
-<section id="gallery" class="gallery">
-  <h2>Gallery</h2>
-  <img src="image1.jpg" alt="Image 1">
-  <img src="image2.png" alt="Image 2">
-  <img src="image3.jpeg" alt="Image 3">
-</section>
-<!-- ...existing code... -->
-
-
-
