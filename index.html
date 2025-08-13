@@ -13,6 +13,7 @@
       <li><a href="#">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#iq-checker">IQ</a></li> <!-- Added IQ option -->
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -38,11 +39,11 @@
 
   <!-- Social Media Icons -->
   <div class="social-icons">
-    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+    <a href="https://twitter.com/your_twitter" title="Twitter" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a href="https://instagram.com/your_instagram" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://facebook.com/your_facebook" title="Facebook" target="_blank"><i class="fab fa-facebook"></i></a>
   </div>
-div class="social-icons">
+  <div class="social-icons">
     <a href="https://discord.com" title="Discord: prajwalthakur_" target="_blank"><i class="fab fa-discord"></i></a>
   </div>
 
@@ -67,6 +68,19 @@ div class="social-icons">
       </div>
       <div id="gameStatus"></div>
       <button onclick="resetGame()">Restart</button>
+    </div>
+  </section>
+
+  <!-- IQ Quiz Section -->
+  <section id="iq-checker">
+    <h2>IQ Quiz</h2>
+    <div id="quizBox">
+      <p id="quizQuestion"></p>
+      <input type="text" id="quizAnswer" placeholder="Your answer...">
+      <button onclick="submitQuizAnswer()">Submit</button>
+      <p id="quizFeedback"></p>
+      <button id="nextQuestionBtn" onclick="nextQuizQuestion()" style="display:none;">Next Question</button>
+      <p id="quizScore"></p>
     </div>
   </section>
 
@@ -119,6 +133,70 @@ div class="social-icons">
     resetGame();
   };
   </script>
+
+  <!-- IQ Quiz Script -->
+  <script>
+  const quizQuestions = [
+  { q: "What is 7 + 5?", a: "12" },
+  { q: "What is the capital of France?", a: "paris" },
+  { q: "What is H2O commonly known as?", a: "water" },
+  { q: "Who developed the theory of relativity?", a: "einstein" },
+  { q: "What is 9 x 6?", a: "54" },
+  { q: "What planet is known as the Red Planet?", a: "mars" },
+  { q: "What is the square root of 64?", a: "8" },
+  { q: "What is the chemical symbol for gold?", a: "au" }
+];
+
+let quizIndex = 0;
+let quizScore = 0;
+
+function showQuizQuestion() {
+  document.getElementById('quizQuestion').textContent = quizQuestions[quizIndex].q;
+  document.getElementById('quizAnswer').value = "";
+  document.getElementById('quizFeedback').textContent = "";
+  document.getElementById('nextQuestionBtn').style.display = "none";
+  document.getElementById('quizScore').textContent = `Score: ${quizScore}/${quizQuestions.length}`;
+}
+
+function submitQuizAnswer() {
+  const userAnswer = document.getElementById('quizAnswer').value.trim().toLowerCase();
+  const correctAnswer = quizQuestions[quizIndex].a.toLowerCase();
+  if (userAnswer === correctAnswer) {
+    document.getElementById('quizFeedback').textContent = "Correct!";
+    quizScore++;
+  } else {
+    document.getElementById('quizFeedback').textContent = `Wrong! The correct answer is: ${quizQuestions[quizIndex].a}`;
+  }
+  document.getElementById('nextQuestionBtn').style.display = "inline-block";
+  document.getElementById('quizScore').textContent = `Score: ${quizScore}/${quizQuestions.length}`;
+}
+
+function nextQuizQuestion() {
+  quizIndex++;
+  if (quizIndex < quizQuestions.length) {
+    showQuizQuestion();
+  } else {
+    document.getElementById('quizQuestion').textContent = "Quiz finished!";
+    document.getElementById('quizAnswer').style.display = "none";
+    document.getElementById('quizFeedback').textContent = `Your final score is ${quizScore}/${quizQuestions.length}`;
+    document.getElementById('nextQuestionBtn').style.display = "none";
+  }
+}
+
+window.onload = function() {
+  resetGame();
+  showQuizQuestion();
+};
+  </script>
 </body>
 </html>
+
+<Ii>
+  
+</Ii>
+
+
+
+
+
 
