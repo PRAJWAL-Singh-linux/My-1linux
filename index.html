@@ -37,35 +37,17 @@
   <!-- Button -->
   <button onclick="alert('Welcome to My Website!')">Click Me</button>
 
-  <!-- Book Reading Section -->
-<section id="read-book">
-    <h2>📖 The Legend of the Divine Warriors</h2>
-    <h3>Chapter 1: The Beginning</h3>
-    <div id="chapter-content">
-        <p>In the ancient lands, where the sun painted the skies golden, a prophecy whispered through the winds...</p>
-        <p>This is a sample excerpt. You can replace it with your real chapter content.</p>
-    </div>
-</section>
-<!-- Read Story Button -->
-<button id="openSidebar">📖 Read The Legend of the Divine Warriors</button>
-
-<!-- Sidebar Menu -->
-<div id="sidebar">
-    <h2>Chapters</h2>
-    <ul>
-        <li onclick="loadChapter(1)">Chapter 1: The Beginning</li>
-        <li onclick="loadChapter(2)">Chapter 2: The Call of Destiny</li>
-        <li onclick="loadChapter(3)">Chapter 3: The First Battle</li>
-        <!-- Add more chapters here -->
-    </ul>
-</div>
-
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>The Legend of the Divine Warriors</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
         /* Sidebar Styles */
         #sidebar {
             height: 100%;
@@ -73,7 +55,7 @@
             position: fixed;
             left: 0;
             top: 0;
-            background-color: #fff;
+            background-color: white;
             overflow-x: hidden;
             transition: 0.3s;
             padding-top: 20px;
@@ -103,7 +85,6 @@
 
         /* Story Area */
         #storyContent {
-            margin-left: 20px;
             padding: 20px;
             transition: margin-left 0.3s;
         }
@@ -130,45 +111,36 @@
 <body>
 
     <!-- Read Story Button -->
-    <button id="openSidebar">📖 Read The Legend of the Divine Warriors</button>
+    <button id="openSidebar">📖 Read Story</button>
 
     <!-- Sidebar Menu -->
     <div id="sidebar">
         <h2>Chapters</h2>
         <ul>
-            <li onclick="loadChapter(1)">Chapter 1: The Beginning</li>
-            <li onclick="loadChapter(2)">Chapter 2: The Call of Destiny</li>
-            <li onclick="loadChapter(3)">Chapter 3: The First Battle</li>
+            <li onclick="loadChapter(1)">Chapter 1</li>
+            <li onclick="loadChapter(2)">Chapter 2</li>
+            <li onclick="loadChapter(3)">Chapter 3</li>
         </ul>
     </div>
 
     <!-- Story Display Area -->
     <div id="storyContent">
         <h2 id="chapterTitle">Select a Chapter</h2>
-        <p id="chapterText">Click a chapter from the left to start reading.</p>
+        <p id="chapterText">Click a chapter to start reading.</p>
     </div>
 
-    <!-- JavaScript -->
+    <!-- JavaScript placed at the end so it always loads after HTML -->
     <script>
         const chapters = {
-            1: {
-                title: "Chapter 1: The Beginning",
-                text: "In the ancient lands, where the sun painted the skies golden, a prophecy whispered through the winds..."
-            },
-            2: {
-                title: "Chapter 2: The Call of Destiny",
-                text: "Veer stood at the edge of the sacred river, feeling the weight of destiny pressing upon his heart..."
-            },
-            3: {
-                title: "Chapter 3: The First Battle",
-                text: "The sound of clashing swords echoed as Veer and Arjun faced their first true test..."
-            }
+            1: { title: "Chapter 1", text: "This is chapter 1 content." },
+            2: { title: "Chapter 2", text: "This is chapter 2 content." },
+            3: { title: "Chapter 3", text: "This is chapter 3 content." }
         };
 
-        document.getElementById("openSidebar").onclick = function() {
+        document.getElementById("openSidebar").addEventListener("click", function() {
             let sidebar = document.getElementById("sidebar");
             sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
-        };
+        });
 
         function loadChapter(num) {
             document.getElementById("chapterTitle").innerText = chapters[num].title;
@@ -178,6 +150,7 @@
 
 </body>
 </html>
+
 
   <!-- Social Media Icons -->
   <div class="social-icons">
@@ -336,6 +309,7 @@ window.onload = function() {
 <Ii>
   
 </Ii>
+
 
 
 
