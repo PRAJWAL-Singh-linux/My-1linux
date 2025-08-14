@@ -37,6 +37,153 @@
   <!-- Button -->
   <button onclick="alert('Welcome to My Website!')">Click Me</button>
 
+  <!-- Book Reading Section -->
+<section id="read-book">
+    <h2>📖 The Legend of the Divine Warriors</h2>
+    <h3>Chapter 1: The Beginning</h3>
+    <div id="chapter-content">
+        <p>In the ancient lands, where the sun painted the skies golden, a prophecy whispered through the winds...</p>
+        <p>This is a sample excerpt. You can replace it with your real chapter content.</p>
+    </div>
+</section>
+<!-- Read Story Button -->
+<button id="openSidebar">📖 Read The Legend of the Divine Warriors</button>
+
+<!-- Sidebar Menu -->
+<div id="sidebar">
+    <h2>Chapters</h2>
+    <ul>
+        <li onclick="loadChapter(1)">Chapter 1: The Beginning</li>
+        <li onclick="loadChapter(2)">Chapter 2: The Call of Destiny</li>
+        <li onclick="loadChapter(3)">Chapter 3: The First Battle</li>
+        <!-- Add more chapters here -->
+    </ul>
+</div>
+
+<!-- Story Display Area -->
+<div id="storyContent">
+    <h2 id="chapterTitle">Select a Chapter</h2>
+    <p id="chapterText">Click a chapter from the left to start reading.</p>
+</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>The Legend of the Divine Warriors</title>
+    <style>
+        /* Sidebar Styles */
+        #sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: #fff;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        #sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #sidebar ul li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #sidebar ul li:hover {
+            background-color: #f4f4f4;
+        }
+
+        /* Story Area */
+        #storyContent {
+            margin-left: 20px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        /* Open Button */
+        #openSidebar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            background-color: #222;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #openSidebar:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Read Story Button -->
+    <button id="openSidebar">📖 Read The Legend of the Divine Warriors</button>
+
+    <!-- Sidebar Menu -->
+    <div id="sidebar">
+        <h2>Chapters</h2>
+        <ul>
+            <li onclick="loadChapter(1)">Chapter 1: The Beginning</li>
+            <li onclick="loadChapter(2)">Chapter 2: The Call of Destiny</li>
+            <li onclick="loadChapter(3)">Chapter 3: The First Battle</li>
+        </ul>
+    </div>
+
+    <!-- Story Display Area -->
+    <div id="storyContent">
+        <h2 id="chapterTitle">Select a Chapter</h2>
+        <p id="chapterText">Click a chapter from the left to start reading.</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const chapters = {
+            1: {
+                title: "Chapter 1: The Beginning",
+                text: "In the ancient lands, where the sun painted the skies golden, a prophecy whispered through the winds..."
+            },
+            2: {
+                title: "Chapter 2: The Call of Destiny",
+                text: "Veer stood at the edge of the sacred river, feeling the weight of destiny pressing upon his heart..."
+            },
+            3: {
+                title: "Chapter 3: The First Battle",
+                text: "The sound of clashing swords echoed as Veer and Arjun faced their first true test..."
+            }
+        };
+
+        document.getElementById("openSidebar").onclick = function() {
+            let sidebar = document.getElementById("sidebar");
+            sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
+        };
+
+        function loadChapter(num) {
+            document.getElementById("chapterTitle").innerText = chapters[num].title;
+            document.getElementById("chapterText").innerText = chapters[num].text;
+        }
+    </script>
+
+</body>
+</html>
+
   <!-- Social Media Icons -->
   <div class="social-icons">
     <a href="https://twitter.com/your_twitter" title="Twitter" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -194,6 +341,7 @@ window.onload = function() {
 <Ii>
   
 </Ii>
+
 
 
 
