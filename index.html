@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+    <!DOCTYPE html>
 <html>
 <head>
   <title>My First Website</title>
@@ -12,33 +13,25 @@
     <ul>
       <li><a href="#">Home</a></li>
       <li><a href="#about">About</a></li>
-      <li><a href="#gallery">Gallery</a></li>
-      <li><a href="#iq-checker">IQ</a></li> <!-- Added IQ option -->
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+      <li><a href="#iq-checker">IQ</a></li> 
+     
+
+
+<!-- Under construction -->
+  <div class="!!under-construction!!">
+    <h2>Under Construction</h2>
+    <p>!This website is currently under construction. Please check back later!</p>
+  </div>
 
   <!-- Animated Welcome Text -->
   <h1 class="animated-text">Hello World!</h1>
   <p>This is my first online website! :)</p>
-  
-  <!-- Under construction -->
-  <div class="under-construction">
-    <h2>Under Construction</h2>
-    <p>This website is currently under construction. Please check back later!</p>
-  </div>
-
 
   <!-- About Section -->
   <section id="about">
     <h2>About Me</h2>
     <p>I'm learning web development, and this is my first project. I love creating beautiful and interactive websites!</p>
   </section>
-
-  
-
-  <!-- Button -->
-  <button onclick="alert('Welcome to My Website!')">Click Me</button>
 
 
 
@@ -52,6 +45,11 @@
     <a href="https://discord.com" title="Discord: prajwalthakur_" target="_blank"><i class="fab fa-discord"></i></a>
   </div>
 
+  
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 My First Website</p>
+  </footer>
   <!-- Tic-Tac-Toe Game Section -->
   <section id="game">
     <h2>Play Tic-Tac-Toe!</h2>
@@ -75,132 +73,8 @@
       <button onclick="resetGame()">Restart</button>
     </div>
   </section>
-
-  <!-- IQ Quiz Section -->
-  <section id="iq-checker">
-    <h2>IQ Quiz</h2>
-    <div id="quizBox">
-      <p id="quizQuestion"></p>
-      <input type="text" id="quizAnswer" placeholder="Your answer...">
-      <button onclick="submitQuizAnswer()">Submit</button>
-      <p id="quizFeedback"></p>
-      <button id="nextQuestionBtn" onclick="nextQuizQuestion()" style="display:none;">Next Question</button>
-      <p id="quizScore"></p>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 My First Website</p>
-  </footer>
-
-  <!-- Tic-Tac-Toe Game Script -->
-  <script>
-  let board = ["", "", "", "", "", "", "", "", ""];
-  let currentPlayer = "X";
-  let gameActive = true;
-
-  function makeMove(index) {
-    if (!gameActive || board[index] !== "") return;
-    board[index] = currentPlayer;
-    document.getElementsByClassName('cell')[index].textContent = currentPlayer;
-    if (checkWinner()) {
-      document.getElementById('gameStatus').textContent = currentPlayer + " wins!";
-      gameActive = false;
-    } else if (board.every(cell => cell !== "")) {
-      document.getElementById('gameStatus').textContent = "It's a draw!";
-      gameActive = false;
-    } else {
-      currentPlayer = currentPlayer === "X" ? "O" : "X";
-      document.getElementById('gameStatus').textContent = "Turn: " + currentPlayer;
-    }
-  }
-
-  function checkWinner() {
-    const winPatterns = [
-      [0,1,2],[3,4,5],[6,7,8],
-      [0,3,6],[1,4,7],[2,5,8],
-      [0,4,8],[2,4,6]
-    ];
-    return winPatterns.some(pattern =>
-      pattern.every(idx => board[idx] === currentPlayer)
-    );
-  }
-
-  function resetGame() {
-    board = ["", "", "", "", "", "", "", "", ""];
-    currentPlayer = "X";
-    gameActive = true;
-    Array.from(document.getElementsByClassName('cell')).forEach(cell => cell.textContent = "");
-    document.getElementById('gameStatus').textContent = "Turn: X";
-  }
-  window.onload = function() {
-    resetGame();
-  };
-  </script>
-
-  <!-- IQ Quiz Script -->
-  <script>
-  const quizQuestions = [
-  { q: "What is 7 + 5?", a: "12" },
-  { q: "What is the capital of France?", a: "paris" },
-  { q: "What is H2O commonly known as?", a: "water" },
-  { q: "Who developed the theory of relativity?", a: "einstein" },
-  { q: "What is 9 x 6?", a: "54" },
-  { q: "What planet is known as the Red Planet?", a: "mars" },
-  { q: "What is the square root of 64?", a: "8" },
-  { q: "What is the chemical symbol for gold?", a: "au" }
-];
-
-let quizIndex = 0;
-let quizScore = 0;
-
-function showQuizQuestion() {
-  document.getElementById('quizQuestion').textContent = quizQuestions[quizIndex].q;
-  document.getElementById('quizAnswer').value = "";
-  document.getElementById('quizFeedback').textContent = "";
-  document.getElementById('nextQuestionBtn').style.display = "none";
-  document.getElementById('quizScore').textContent = `Score: ${quizScore}/${quizQuestions.length}`;
-}
-
-function submitQuizAnswer() {
-  const userAnswer = document.getElementById('quizAnswer').value.trim().toLowerCase();
-  const correctAnswer = quizQuestions[quizIndex].a.toLowerCase();
-  if (userAnswer === correctAnswer) {
-    document.getElementById('quizFeedback').textContent = "Correct!";
-    quizScore++;
-  } else {
-    document.getElementById('quizFeedback').textContent = `Wrong! The correct answer is: ${quizQuestions[quizIndex].a}`;
-  }
-  document.getElementById('nextQuestionBtn').style.display = "inline-block";
-  document.getElementById('quizScore').textContent = `Score: ${quizScore}/${quizQuestions.length}`;
-}
-
-function nextQuizQuestion() {
-  quizIndex++;
-  if (quizIndex < quizQuestions.length) {
-    showQuizQuestion();
-  } else {
-    document.getElementById('quizQuestion').textContent = "Quiz finished!";
-    document.getElementById('quizAnswer').style.display = "none";
-    document.getElementById('quizFeedback').textContent = `Your final score is ${quizScore}/${quizQuestions.length}`;
-    document.getElementById('nextQuestionBtn').style.display = "none";
-  }
-}
-
-window.onload = function() {
-  resetGame();
-  showQuizQuestion();
-};
-  </script>
-</body>
-</html>
-
-<Ii>
-  
-</Ii>
-
-<!DOCTYPE html>
+    
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -238,6 +112,10 @@ window.onload = function() {
     .btn{background:#84fab0;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
     .btn.secondary{background:#fff;border:1px solid rgba(0,0,0,0.08)}
     .btn:disabled{opacity:0.5;cursor:not-allowed}
+
+
+
+
 
     /* typing cursor */
     .typing-cursor::after{
@@ -521,6 +399,14 @@ Veer returned home not as a conqueror but as a builder. The villages began to he
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 
