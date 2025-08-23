@@ -1,0 +1,342 @@
+    
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>The Legend of the Divine Warriors — Animated Reader</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --accent:#84fab0;
+      --accent-2:#8fd3f4;
+      --panel-bg: rgba(255,255,255,0.95);
+      --text:#111;
+      --max-width:1000px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Arial, sans-serif;background: linear-gradient(120deg,var(--accent),var(--accent-2));color:var(--text);}
+    header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--panel-bg);box-shadow:0 2px 6px rgba(0,0,0,0.08);position:sticky;top:0;z-index:1200}
+    header h1{font-size:1.05rem;margin:0}
+    #openSidebarBtn{background:#222;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+    #openSidebarBtn:hover{opacity:0.95}
+
+    .container{display:flex;min-height:calc(100vh - 74px);max-width:var(--max-width);margin:18px auto;padding:12px;gap:18px;align-items:flex-start}
+    #sidebar{width:320px;max-width:78vw;background:var(--panel-bg);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(0,0,0,0.12);overflow:auto;transition:transform .28s ease;transform:translateX(0)}
+    #sidebar.hidden{transform:translateX(-120%)}
+    #sidebar h2{margin:0 0 10px 0;text-align:center}
+    #chapterList{list-style:none;padding:0;margin:0}
+    #chapterList li{padding:10px;border-radius:8px;margin-bottom:6px;cursor:pointer;border:1px solid rgba(0,0,0,0.04);user-select:none}
+    #chapterList li:hover{background:rgba(0,0,0,0.03)}
+    #chapterList li.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:0}
+
+    #reader{flex:1;background:var(--panel-bg);border-radius:12px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,0.12);min-height:60vh;overflow:auto;position:relative}
+    #chapterTitle{margin-top:0}
+    #chapterMeta{color:#444;font-size:0.95rem;margin-bottom:12px}
+    #chapterText{font-family:Georgia, "Times New Roman", serif;line-height:1.8;color:#222;font-size:1.05rem;white-space:pre-wrap;min-height:240px}
+    .controls{display:flex;gap:10px;margin-top:18px;align-items:center}
+    .btn{background:#84fab0;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+    .btn.secondary{background:#fff;border:1px solid rgba(0,0,0,0.08)}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+
+
+
+
+
+    /* typing cursor */
+    .typing-cursor::after{
+      content: "";
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: #222;
+      margin-left: 6px;
+      vertical-align: bottom;
+      animation: blink 1s steps(2, start) infinite;
+    }
+    @keyframes blink{
+      50% { opacity: 0; }
+    }
+
+    #controlsPanel{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    label.small{font-size:0.9rem;color:#333;margin-right:6px}
+    input[type="range"]{width:140px}
+
+    #closeSidebar{display:none;background:transparent;border:0;cursor:pointer;font-size:0.95rem;padding:6px}
+    @media (max-width:900px){
+      .container{flex-direction:column;padding-bottom:40px}
+      #sidebar{position:fixed;left:12px;top:74px;height:calc(100vh - 130px);z-index:1100;transform:translateX(-120%)}
+      #sidebar.visible{transform:translateX(0)}
+      #openSidebarBtn{position:fixed;left:16px;top:16px;z-index:1200}
+      #closeSidebar{display:inline}
+      #reader{padding:18px;margin-top:86px}
+    }
+    footer{opacity:0.9;text-align:center;padding:10px 0;margin-top:18px}
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>The Legend of the Divine Warriors — Animated Reader</h1>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div id="controlsPanel" title="Playback controls (speed / skip)">
+        <label class="small">Speed</label>
+        <select id="speedSelect" aria-label="Typing speed">
+          <option value="60">Slow</option>
+          <option value="30" selected>Medium</option>
+          <option value="8">Fast</option>
+        </select>
+        <button id="skipBtn" class="btn secondary" title="Show whole chapter instantly">Show instantly</button>
+      </div>
+      <button id="openSidebarBtn" aria-label="Open chapters">📖 Chapters</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <aside id="sidebar" class="hidden" aria-hidden="true">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <h2>Chapters</h2>
+        <button id="closeSidebar">✕</button>
+      </div>
+      <ul id="chapterList" role="list"></ul>
+    </aside>
+
+    <article id="reader" aria-live="polite">
+      <h2 id="chapterTitle">Select a chapter from the left</h2>
+      <div id="chapterMeta">The Legend of the Divine Warriors — By Prajwal</div>
+      <div id="chapterText">Click any chapter to start. Use the speed control or press "Show instantly" to skip the animation.</div>
+
+      <div class="controls">
+        <button id="prevBtn" class="btn secondary" disabled>◀ Previous</button>
+        <button id="nextBtn" class="btn secondary" disabled>Next ▶</button>
+        <div style="flex:1"></div>
+        <button id="closePanel" class="btn">Clear Reader</button>
+      </div>
+    </article>
+  </main>
+
+  <footer>&copy; 2025 — Your Site</footer>
+
+  <script>
+    // Chapters (1 - 17) - same content inserted earlier
+    const chapters = {
+      1: { title: "Chapter 1 — The Beginning", text: `In the ancient lands where mountains caught the morning fire, the small village of Kaveri slept beneath a quilt of stars. Veer, an orphan raised by the river-keepers, woke before dawn as he did every day. His hands bore the calluses of work, but his heart was restless — a hunger he could not name. That morning, a wandering minstrel spoke of a fallen temple beyond the eastern hills, of an ancient sigil that pulsed with a faint blue light when the moon rose. The stories tugged at something inside Veer: a memory like a half-remembered dream and a promise whispered by the wind.
+
+Veer was not born a hero. He barely knew how far his village's borders reached. But destiny, as tales oft tell, chooses strange thresholds. When the first sign — a glowing feather drifting down from an unseen height — touched his palm, the world tilted. People in the marketplace paused; the old priest crossed himself. Veer felt the feather's warmth seep into his skin and knew, without words, that his life would be different from that day on.
+
+Through the rest of the chapter, Veer follows the minstrel's hints, meets a stranger named Arjun who carries a scar and a quiet laugh, and overhears the priest utter that a prophecy once dormant has awoken. The village that had known only peace and harvests suddenly felt the first tremor of a wider fate stirring beyond the hills.` },
+      2: { title: "Chapter 2 — The Call of Destiny", text: `Days blended with nights as the scent of rain and soil filled the air. Veer and Arjun began to travel together. Where Veer carried curiosity, Arjun carried history — careful, guarded knowledge of old wars and the lineages of blades. Arjun explained the old orders: the Diviners, the Shieldbearers, the spear-wielders who stood as guardians of a balance that had been maintained for centuries.
+
+It was not all glory; the journey showed them villages burned by brigands, rivers clogged by unnatural silt, and a people whispering of a power that returned and would not be tamed easily. The travelers met Mira, a healer who read the bones of birds as if reading scripture; she joined them after they helped her fend off raiders. Together they discovered the first signpost: a broken statue half buried at the border of an abandoned temple, its eyes gouged and its hands outstretched toward a horizon that had long ago forgotten its name. In that ruin's shadow, Veer touched a glyph that hummed like a sleeping chord and felt the Stranger's presence deepen: a map not of land, but of purpose.` },
+      3: { title: "Chapter 3 — The First Battle", text: `The first real test came at the ford of Nal. A band of mercenaries — black-masked and hungry for coin — had seized the crossing and extorted tolls from traders. Veer, Arjun, and Mira arrived to find smoke and the sight of wagons overturned. They could have turned away; they did not.
+
+Arjun's knowledge of formation and Veer's unpredictable courage made a pair that surprised the mercenaries. The fight was messy and human: not the clashing of two armies, but the close, fearful, chaotic struggle of people who had been pushed too far. Veer learned the weight of a hand when it struck and the cold sense of finality that cut through the air when steel found flesh for the first time. After the smoke settled, the villagers, wide-eyed and wary, thanked them in a voice that held both gratitude and the worry of future reprisals.
+
+That night, around a small fire, the three considered what had changed. Veer had tasted the consequences of choice. He began to understand that courage alone was not enough; it required learning, discipline, and the soft art of mercy.` },
+      4: { title: "Chapter 4 — The Lost Sigil", text: `They followed the trail of the sigil, etched in the bark of trees and in the margins of old maps. In a cavern where phosphorescent moss lit the walls, they uncovered a carved stone disk — the sigil's twin — hidden for generations. When Mira brushed away the dirt, the disk thrummed and a memory unfurled in Veer's mind: a boy standing before a blazing doorway, silver spears like sunbeams, and a voice calling his name.
+
+Learning to interpret the sigil required time, whispered translations, and the counsel of a hermit who lived among roots and talismans. The hermit told of an ancient covenant: when the spears of golden light returned, a trio would stand and choose whether to mend the old vows or watch kingdoms fall. The disk's unlocking revealed a fragment of a map pointing to the western mountain where the first of the divine weapons lay hidden.` },
+      5: { title: "Chapter 5 — The Hermit's Lesson", text: `The hermit — Alphaan — taught them the old ways: breathing to steady the mind, observing the land as an organism, reading tracks not as marks but as stories. In Alphaan's hut they trained through rain and mist, wrestling with the peculiarities of skill and history. Alphaan told them of leaders who failed because they refused humility; he insisted that the truest victory was a life rebuilt, not a crown taken.
+
+Veer wrestled with fear and patience. Arjun trained with wooden blades, learned to listen for silence in battle, and discovered that his scarred past was not only a wound but a map of resilience. At the end of the chapter, a messenger arrives — breathless and pale — bringing news that a fortress in the north fell and that others were stirring beneath an old banner. Time quickened; they had to choose their path.` },
+      6: { title: "Chapter 6 — Trials of the Vale", text: `The Vale was a place of riddles and mirrors: a valley where the land itself tested those who passed. They navigated bent trees that whispered riddles, a river that reversed itself at moonrise, and caverns that trapped echoes of their greatest fears. Each challenge took something of them — an arrogance, a memory, a boast — forcing them to confront who they were without pretense.
+
+Veer faced visions of a path he might never walk and learned that sacrifice does not always mean loss; sometimes it meant letting go of petty ambitions. When they emerged, bruised and wiser, they found that time had moved differently in the world outside. The stakes had grown; riders with dark banners were nearer, and ordinary towns readied for defense.` },
+      7: { title: "Chapter 7 — The Council at Eldermarch", text: `Eldermarch was a city built around an old willow and a council that convened when storms came. The three sought the counsel's help, hoping to rally allies. The city elders listened, argued, and remembered old treaties. The chapters here are full of debate and politics: bargains offered, old grudges resurfaced, and the costs of asking for help.
+
+Veer learned that persuasion is its own battle. He spoke plainly of the sigil and of the danger, and though some laughed, others leaned forward. In the end, a small but vital faction agreed to aid them: archers skilled in the mountain wind, and a caravan of smiths who promised to repair armor and mend weapons. They left Eldermarch with new allies and heavier expectations.` },
+      8: { title: "Chapter 8 — The Desert of Glass", text: `Crossing the desert tested their endurance. The sand glittered and sang at noon; the nights were cold enough to bite. They learned to ration not only water but hope, and in that wasteland met a caravan of traders who traded in memories — a strange commerce that left them with stories in exchange for supplies.
+
+A skirmish with sand bandits taught them that not every fight was honorable and that cunning sometimes served better than direct force. Veer discovered a shard of glass amongst the dunes that when held to the sky displayed a flicker of the past, an echo of the Divine Warriors long gone. The shard hinted of a lost citadel beneath the dunes' shifting skin.` },
+      9: { title: "Chapter 9 — The Citadel Beneath the Dunes", text: `They found the entrance hidden beneath a caravanserai of bones — an old city swallowed by sand. The citadel's halls were grand and yet empty, dust dancing in shafts of light. Statues of warriors stood with vacant eyes; tapestries told the tale of a kingdom that erased its own wounds.
+
+In the citadel's treasury, they found relics of the Divine Warriors — a shield with a map carved into its face and letters that needed translation. But the citadel's guardian, a golem of old iron and prayer, stirred to life and tested them. Only by demonstrating not brute force but reverence for the past could they proceed. The test left the group shaken but rewarded with a scroll containing a riddle that would point to the first spear's resting place.` },
+      10: { title: "Chapter 10 — The Ascent", text: `The climb to the mountain peak demanded more than strength: it demanded trust. Paths crumbled beneath their feet, snow drifted sideways, and the world narrowed to the rhythm of breath and step. In those thin airs, Arjun admitted a secret: he was once a member of an order thought lost, and his scar was from a choice that cost many lives.
+
+Veer listened without judgment. The revelation changed nothing about their fellowship in the cliff winds, but it changed how they viewed battles to come. When they finally reached the ledge that hid the golden spear, they found not a weapon for conquest but a test of heart: facing a mirror that showed each person what they'd become if they chose power above all. Veer stepped forward and resisted, and the spear — a slender shaft tipped with glowing gold — accepted him, humbly, like a contained sun.` },
+      11: { title: "Chapter 11 — Echoes of War", text: `With the spear in their care, news traveled fast. Camps raised their flags; old rivals smelled advantage. Battles became inevitable. This chapter follows the aftermath of their discovery: skirmishes at night, ambushes on lonely roads, and the first true loss among their small company. The grief taught them the hard arithmetic of consequence.
+
+Mira tended to those wounded and counseled the living, while Arjun sharpened strategies and Veer felt the spear's warmth when he slept, like a pulse at his side. They began to realize the spear was more than a tool: it was a responsibility.` },
+      12: { title: "Chapter 12 — The Binding", text: `Binding the spear's promise required ceremony and the agreement of the land's elders. In a field ringed by standing stones, they performed rites to seal the spear's power to those who would use it for repair, not conquest. The ritual demanded a vow: never to seek domination with a divine weapon, but to restore what was broken.
+
+During the binding, a shadow slipped near the edge of the ritual circle — a spy from a power-hungry lord. Veer and his friends barely thwarted the sabotage. The chapter ends with the vow sealed and the understanding that watchers now tracked their every movement.` },
+      13: { title: "Chapter 13 — The Siege of Rathan", text: `Rathan was a city proud of its walls. To lift the siege they used guile and alliance: sowing dissent among the besiegers, opening secret gates, and inspiring the city's defenders with tales of the spear and the promise behind it. The siege tested all their skills: behind the scenes diplomacy, battle-hardened leadership, and hearts willing to stand in harm's way.
+
+By sunrise, the siege was lifted, but at a cost. The chapter closes on a bittersweet note: homes saved, but lives altered, and a reminder that triumph and sorrow walk the same road.` },
+      14: { title: "Chapter 14 — The Betrayal", text: `Not all allies prove true. A trusted figure within their circle turned, seduced by the promise of power and fearful of the changes the vow demanded. Betrayal struck in the quiet hours: plans leaked, supplies redirected, a trap set to capture the spear.
+
+The fallout forced Veer to confront the truth about people: fear can make cowards of the bravest, and desire can make traitors of the faithful. In the aftermath, they reorganized and resolved not to let bitterness steer them. The group’s bonds, though strained, tightened into something steadier.` },
+      15: { title: "Chapter 15 — The Ashen March", text: `Armies moved like an approaching storm. Villages fled; smoke mottled the horizon. Veer's group led a small resistance — not to win every field, but to save those they could. They became a legend in fragments: a spear that struck true, a healer that walked through fire, a scarred fighter who kept his oath.
+
+The Ashen March showed them the cost of inertia and cowardice across nations, and tested whether the vow-bound weapons would be enough to stem the tide. The chapter ends with a desperate charge that buys time but yields new scars.` },
+      16: { title: "Chapter 16 — The Heart of the Storm", text: `The final confrontation moved to the citadel where the corrupt lord had gathered power and the other divine artifacts. In the labyrinth of the citadel, old ghosts walked the corridors: memories of choices that led to ruin, of bargains made for safety and later regretted.
+
+Veer faced the lord, not with blind fury, but with the steadiness that had grown inside him. A duel of wills and weapons unfolded, and it seemed for a moment that history might repeat its darkest patterns. But the oath and the compassion of those he loved held, turning the end into a hinge for a new start.` },
+      17: { title: "Chapter 17 — A New Covenant", text: `When the dust settled, leaders gathered, bodies tended, and the spear returned to its resting place — not in a vault of trophies but in a place of learning. The new covenant called for councils of many voices, for repair and restitution, and for guarding the balance by many hands instead of a single throne.
+
+Veer returned home not as a conqueror but as a builder. The villages began to heal. The last pages of the book are not a parade of celebrations but the quiet work of mending: planting trees where fires had been, relearning trades, and listening to histories that were once suppressed. The prophecy had not delivered a perfect world, but it handed them a path forward — one they could walk together.` }
+    };
+
+    // Build chapter list in UI
+    const listEl = document.getElementById('chapterList');
+    const chapterIds = Object.keys(chapters).map(k => Number(k)).sort((a,b)=>a-b);
+    chapterIds.forEach((id) => {
+      const li = document.createElement('li');
+      li.textContent = `${id}. ${chapters[id].title}`;
+      li.dataset.id = id;
+      li.tabIndex = 0;
+      li.addEventListener('click', () => selectChapter(id));
+      li.addEventListener('keydown', (e) => { if(e.key === 'Enter') selectChapter(id); });
+      listEl.appendChild(li);
+    });
+
+    // Elements & state
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('openSidebarBtn');
+    const closeBtn = document.getElementById('closeSidebar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const closePanel = document.getElementById('closePanel');
+    const chapterTitleEl = document.getElementById('chapterTitle');
+    const chapterTextEl = document.getElementById('chapterText');
+    const speedSelect = document.getElementById('speedSelect');
+    const skipBtn = document.getElementById('skipBtn');
+
+    let currentChapter = null;
+    let typingTask = null;
+    let isTyping = false;
+
+    // open/close sidebar
+    function openSidebar(){ sidebar.classList.remove('hidden'); sidebar.classList.add('visible'); sidebar.setAttribute('aria-hidden','false'); const first = listEl.querySelector('li'); if(first) first.focus(); }
+    function closeSidebar(){ sidebar.classList.add('hidden'); sidebar.classList.remove('visible'); sidebar.setAttribute('aria-hidden','true'); openBtn.focus(); }
+
+    openBtn.addEventListener('click', ()=>{ if(sidebar.classList.contains('visible')) closeSidebar(); else openSidebar(); });
+    if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
+
+    // Typing function (animatic)
+    function typeText(text, speed){
+      // cancel previous
+      if(typingTask){ clearTimeout(typingTask); typingTask = null; }
+      isTyping = true;
+      chapterTextEl.classList.add('typing-cursor');
+      chapterTextEl.textContent = ""; // start empty
+      let i = 0;
+      const len = text.length;
+      function step(){
+        // append next char
+        const nextChar = text.charAt(i);
+        chapterTextEl.textContent += nextChar;
+        i++;
+        if(i < len){
+          typingTask = setTimeout(step, speed);
+        } else {
+          // done
+          isTyping = false;
+          chapterTextEl.classList.remove('typing-cursor');
+          typingTask = null;
+        }
+      }
+      step();
+    }
+
+    // Immediately show full text (skip animation)
+    function showFullText(text){
+      if(typingTask){ clearTimeout(typingTask); typingTask = null; }
+      isTyping = false;
+      chapterTextEl.classList.remove('typing-cursor');
+      chapterTextEl.textContent = text;
+    }
+
+    // Select chapter
+    function selectChapter(id){
+      currentChapter = Number(id);
+      const chap = chapters[currentChapter];
+      chapterTitleEl.innerText = chap.title;
+      // mark active
+      Array.from(listEl.children).forEach(li => li.classList.toggle('active', Number(li.dataset.id) === currentChapter));
+      // enable prev/next
+      const idx = chapterIds.indexOf(currentChapter);
+      prevBtn.disabled = (idx <= 0);
+      nextBtn.disabled = (idx >= chapterIds.length - 1);
+
+      // animate typing
+      const speed = Number(speedSelect.value); // ms per char
+      // small safety: don't run animatic for extremely long text at extremely slow speeds
+      // but we let user skip.
+      typeText(chap.text + "\n\n", speed);
+
+      // close sidebar on small screens for better reading
+      if(window.matchMedia("(max-width:900px)").matches){
+        closeSidebar();
+        window.scrollTo({top:0,behavior:"smooth"});
+      }
+    }
+
+    prevBtn.addEventListener('click', () => {
+      const idx = chapterIds.indexOf(currentChapter);
+      if(idx > 0) selectChapter(chapterIds[idx - 1]);
+    });
+    nextBtn.addEventListener('click', () => {
+      const idx = chapterIds.indexOf(currentChapter);
+      if(idx < chapterIds.length - 1) selectChapter(chapterIds[idx + 1]);
+    });
+
+    closePanel.addEventListener('click', () => {
+      // clear reader
+      if(typingTask){ clearTimeout(typingTask); typingTask = null; }
+      chapterTitleEl.innerText = "Select a chapter from the left";
+      chapterTextEl.textContent = "Click any chapter to start. Use the speed control or press \"Show instantly\" to skip the animation.";
+      currentChapter = null;
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+    });
+
+    // Skip / show instantly
+    skipBtn.addEventListener('click', () => {
+      if(currentChapter === null) return;
+      const chap = chapters[currentChapter];
+      showFullText(chap.text);
+    });
+
+    // Keyboard arrows for prev/next
+    document.addEventListener('keydown', (e) => {
+      if(currentChapter !== null && !isTyping){
+        if(e.key === 'ArrowLeft') prevBtn.click();
+        if(e.key === 'ArrowRight') nextBtn.click();
+      }
+      // allow Escape to close sidebar on small screens
+      if(e.key === 'Escape' && window.matchMedia("(max-width:900px)").matches){
+        closeSidebar();
+      }
+    });
+
+    // Ensure sidebar initial state
+    if(window.matchMedia("(max-width:900px)").matches){
+      sidebar.classList.add('hidden');
+      sidebar.setAttribute('aria-hidden','true');
+    } else {
+      sidebar.classList.remove('hidden');
+      sidebar.setAttribute('aria-hidden','false');
+    }
+
+    // Optional: open chapter 1 by default
+    // selectChapter(1);
+
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
